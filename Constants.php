@@ -13,14 +13,8 @@
  * @author gWilli
  * @version 1.0
  * @name Constants
- * @copyright 2014
+ * @copyright 2015
  */
-
-
-
-
-
-
 ini_set('display_errors',0);
 error_reporting(E_ALL);
 ini_set('soap.wsdl_cache_enabled',0);
