@@ -13,7 +13,7 @@
  * @author gWilli
  * @version 1.0
  * @name Constants
- * @copyright 2015
+ * @copyright 2014
  */
 ini_set('display_errors',0);
 error_reporting(E_ALL);
