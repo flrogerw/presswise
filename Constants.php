@@ -13,7 +13,7 @@
  * @author gWilli
  * @version 1.0
  * @name Constants
- * @copyright 2013
+ * @copyright 2014
  */
 
 ini_set('display_errors',0);
