@@ -13,7 +13,7 @@
  * @author gWilli
  * @version 1.0
  * @name Constants
- * @copyright 2014
+ * @copyright 2015
  */
 
 
