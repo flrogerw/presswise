@@ -12,7 +12,12 @@
 /**
  * Include the AWS SDK
  */
-require 'AWSSDKforPHP/aws.phar';
+//require 'AWSSDKforPHP/aws.phar';
+
+/**
+ * Include the RackSpace API
+ */
+require_once( 'vendor/autoload.php' );
 /**
  * Processes PQM Zip Files
  *
@@ -28,8 +33,15 @@ require 'AWSSDKforPHP/aws.phar';
  */
 final class ProcessPqm
 {
-	use Aws\S3\S3Client;
-	use Aws\S3\Sync\UploadSyncBuilder;
+	//use Aws\S3\S3Client;
+	//use Aws\S3\Sync\UploadSyncBuilder;
+	use OpenCloud\Rackspace;
+	
+	/**
+	 * @access private
+	 * @var RS Cloud File Container Object
+	 */
+	private $_container;
 	
 	/**
 	 * DataBase Connection
@@ -40,6 +52,7 @@ final class ProcessPqm
 	
 	/**
 	 * AWS S3 Resource
+	 * @deprecated
 	 * @access private
 	 * @var AWS S3 Object
 	 */
@@ -54,8 +67,18 @@ final class ProcessPqm
 	public function __construct()
 	{
 		$this->_dbHandle = PresswiseDb::getInstance();
-		$this->_client = S3Client::factory(array('key' => AWS_KEY,'secret' => AWS_SECRET));
-
+		//$this->_client = S3Client::factory(array('key' => AWS_KEY,'secret' => AWS_SECRET));
+		// Set Up RackSpace Connection
+		$rsClient = new Rackspace(Rackspace::US_IDENTITY_ENDPOINT, array(
+				'username' => RS_KEY,
+				'apiKey' => RS_SECRET
+		));
+		
+		$objectStoreService = $rsClient->objectStoreService(null, RS_REGION);		
+		$this->_container = $objectStoreService->getContainer( 'converter.test' );
+		//$this->_container = $objectStoreService->getContainer( PQM_CONTAINER );
+		
+		
 	}
 
 	/**
@@ -68,21 +91,35 @@ final class ProcessPqm
 	public function process(){
 
 		try{
-			$this->_getZipsFromS3();
-			$this->_unZipPqm();
-			$this->_parseOrderXml();
-			$this->_uploadPdfs();
+			//$this->_getZipsFromS3();
+			$this->_getZipsFromRS();
+			//$this->_unZipPqm();
+			//$this->_parseOrderXml();
+			//$this->_uploadPdfs();
 		} catch( Exceptioin $e ) {
 
 		}
 	}
 
 	/**
-	 * Uplaods Unziped PDFs to S3 for Processing
-	 *
+	 * Uplaods Unziped PDFs to RackSpace for Processing
+	 * 
 	 * @return void
 	 * @access private
-	 */
+	*/
+	 private function _uploadPdfs(){
+	 	
+	 	$fileData = fopen( PQM_DOWNLOAD_DIR . $this->_remoteFile, 'r' );
+	 	$uploadData = $this->_container->uploadObject( $this->_remoteFile, $fileData );
+	 	fclose( $fileData );
+	 }
+	
+	/**
+	 * Uplaods Unziped PDFs to S3 for Processing
+	 * @deprecated
+	 * @return void
+	 * @access private
+	 
 	private function _uploadPdfs(){
 
 		UploadSyncBuilder::getInstance()
@@ -94,6 +131,7 @@ final class ProcessPqm
 		->build()
 		->transfer();
 	}
+	*/
 
 	/**
 	 * Parse PQM XML Files and Create Order Array
@@ -164,10 +202,25 @@ final class ProcessPqm
 		}
 	}
 
-
+	
+	/**
+	 * Download PQM Zip Files From RackSpace
+	 * @deprecated
+	 * @access private
+	 * @return boolean
+	 */
+	private function _getZipsFromRS() {
+	
+		$this->_client->downloadBucket( PQM_DOWNLOAD_DIR, PQM_CONTAINER, null, array(
+				'concurrency' => 20,
+				'debug'       => false
+		));
+	}
+	
+	
 	/**
 	 * Download PQM Zip Files From S3
-	 *
+	 * @deprecated
 	 * @access private
 	 * @return boolean
 	 */

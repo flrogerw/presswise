@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Constants Used Throughout the Application
  * -AWS Credentials
@@ -28,6 +29,9 @@ $constants = array(
 		'AWS_KEY' => 'AKIAJGBJMQEKPKTT7KBA',
 		'AWS_SECRET' => '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',
 		'AWS_CACHE' => 'apc',
+		'RS_KEY' => 'Angel.Ramirez',
+		'RS_SECRET' => '4cf28da6ce0d494fbf3924cea5ce1962',
+		'RS_REGION' => 'IAD',
 
 		// Alert Email Information
 		'ALERT_EMAIL' => 'rogerwilliams1962@hotmail.com,david.fantin@successories.com',
@@ -55,8 +59,11 @@ $constants = array(
 		'PRESSWISE_CODE' => '747AEE51C0A97840',
 
 		// PQM INFORMATION
-		'PQM_BUCKET' => 'pqm.polaroidfotobar.dev',
-		'PQM_PRESSWISE_BUCKET' => 'presswise.polaroidfotobar.dev',
+		//'PQM_BUCKET' => 'pqm.polaroidfotobar.dev',
+		//'PQM_PRESSWISE_BUCKET' => 'presswise.polaroidfotobar.dev',
+		'PQM_CONTAINER' => 'pqm.polaroidfotobar.dev',
+		'PQM_PRESSWISE_CONTAINER' => 'presswise.polaroidfotobar.dev',
+		
 		'PQM_DOWNLOAD_DIR' => '/tmp/unzip',
 		'PQM_FINAL_DIR' => '/tmp/done',
 		
