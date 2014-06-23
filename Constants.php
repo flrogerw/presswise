@@ -41,9 +41,9 @@ $constants = array(
 		'SMTP_AUTH' => 'm06Ar14u',
 
 		// Fotobar DB Information
-		'FOTOBAR_DB_USER' => 'fotobar',
+		'FOTOBAR_DB_USER' => 'presswise',
 		'FOTOBAR_DB_AUTH' => 'd7sWxtrd3xTyxGa6',
-		'FOTOBAR_DB_HOST' => 'fotobar.c8nypmct6r9k.us-east-1.rds.amazonaws.com',
+		'FOTOBAR_DB_HOST' => 'localhost',
 		'FOTOBAR_DB_NAME' => 'presswise',
 
 		// Presswise DB Information

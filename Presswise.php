@@ -128,7 +128,7 @@ final class Presswise
 	 * @return void
 	 */
 	public function postSoapOrder() {
-
+return;
 		try{
 
 			$oAuth = $this->_getSoapAuthObj();

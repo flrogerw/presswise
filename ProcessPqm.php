@@ -1,7 +1,7 @@
 <?php 
 /**
  * ProcessPqm
- * 
+ *
  * @package Presswise
  * @subpackage Processing
  * @author gWilli
@@ -30,26 +30,26 @@ require_once( 'vendor/autoload.php' );
  * @package Presswise
  * @subpackage Processing
  * @final Can NOT Extend
- */
+*/
 final class ProcessPqm
 {
 	//use Aws\S3\S3Client;
 	//use Aws\S3\Sync\UploadSyncBuilder;
 	use OpenCloud\Rackspace;
-	
+
 	/**
 	 * @access private
 	 * @var RS Cloud File Container Object
 	 */
 	private $_container;
-	
+
 	/**
 	 * DataBase Connection
 	 * @access private
 	 * @var PresswiseDb Object
 	 */
 	private $_dbHandle;
-	
+
 	/**
 	 * AWS S3 Resource
 	 * @deprecated
@@ -57,7 +57,7 @@ final class ProcessPqm
 	 * @var AWS S3 Object
 	 */
 	private $_client;
-	
+
 	/**
 	 * Object Constructor
 	 *
@@ -73,12 +73,12 @@ final class ProcessPqm
 				'username' => RS_KEY,
 				'apiKey' => RS_SECRET
 		));
-		
-		$objectStoreService = $rsClient->objectStoreService(null, RS_REGION);		
+
+		$objectStoreService = $rsClient->objectStoreService(null, RS_REGION);
 		$this->_container = $objectStoreService->getContainer( 'converter.test' );
 		//$this->_container = $objectStoreService->getContainer( PQM_CONTAINER );
-		
-		
+
+
 	}
 
 	/**
@@ -103,24 +103,24 @@ final class ProcessPqm
 
 	/**
 	 * Uplaods Unziped PDFs to RackSpace for Processing
-	 * 
+	 *
 	 * @return void
 	 * @access private
-	*/
-	 private function _uploadPdfs(){
-	 	
-	 	$fileData = fopen( PQM_DOWNLOAD_DIR . $this->_remoteFile, 'r' );
-	 	$uploadData = $this->_container->uploadObject( $this->_remoteFile, $fileData );
-	 	fclose( $fileData );
-	 }
-	
+	 */
+	private function _uploadPdfs(){
+			
+		$fileData = fopen( PQM_DOWNLOAD_DIR . $this->_remoteFile, 'r' );
+		$uploadData = $this->_container->uploadObject( $this->_remoteFile, $fileData );
+		fclose( $fileData );
+	}
+
 	/**
 	 * Uplaods Unziped PDFs to S3 for Processing
 	 * @deprecated
 	 * @return void
 	 * @access private
-	 
-	private function _uploadPdfs(){
+
+	 private function _uploadPdfs(){
 
 		UploadSyncBuilder::getInstance()
 		->setClient( $this->_client )
@@ -130,8 +130,8 @@ final class ProcessPqm
 		->uploadFromDirectory( PQM_DOWNLOAD_DIR )
 		->build()
 		->transfer();
-	}
-	*/
+		}
+		*/
 
 	/**
 	 * Parse PQM XML Files and Create Order Array
@@ -202,7 +202,7 @@ final class ProcessPqm
 		}
 	}
 
-	
+
 	/**
 	 * Download PQM Zip Files From RackSpace
 	 * @deprecated
@@ -210,14 +210,27 @@ final class ProcessPqm
 	 * @return boolean
 	 */
 	private function _getZipsFromRS() {
-	
-		$this->_client->downloadBucket( PQM_DOWNLOAD_DIR, PQM_CONTAINER, null, array(
-				'concurrency' => 20,
-				'debug'       => false
-		));
+
+	 $files = $this->_container->ObjectList();
+
+	 while($o = $files->Next())
+	 {
+	 	$file_name = $o->getName();
+	 	$file = $this->_container->getObject($file_name);
+	 	printf("** %s\n", $file->getName());
+
+	 	if (!$fp = @fopen( PQM_DOWNLOAD_DIR . $file_name, "wb")) {
+	 		$this->_errorXMLArray[] = array('error' => 'Could not open file ' . PQM_DOWNLOAD_DIR . $file_name . ' for writing');
+	 	}
+	 	//$retval = fwrite($fp, $o->getContent());
+	 	if (fwrite($fp, $file->getContent()) === FALSE) {
+	 		$this->_errorXMLArray[] = array('error' => 'Cannot write to file: ' . PQM_DOWNLOAD_DIR . $file_name );
+	 	}
+	 }
+
 	}
-	
-	
+
+
 	/**
 	 * Download PQM Zip Files From S3
 	 * @deprecated
