@@ -2,6 +2,9 @@
 /**
  * ProcessPqm
  *
+ *@deprecated
+ *@deprecated
+ *
  * @package Presswise
  * @subpackage Processing
  * @author gWilli
