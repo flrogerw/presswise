@@ -26,19 +26,19 @@ ini_set('soap.wsdl_cache_ttl',0);
 $constants = array(
 
 		// AWS Information
-		'AWS_KEY' => 'AKIAJGBJMQEKPKTT7KBA',
-		'AWS_SECRET' => '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',
+		'AWS_KEY' => 'XXXXXXXXXXXXXXXXXXXXXXX',
+		'AWS_SECRET' => 'XXXXXXXXXXXXXXXXXX',
 		'AWS_CACHE' => 'apc',
-		'RS_KEY' => 'Angel.Ramirez',
-		'RS_SECRET' => '4cf28da6ce0d494fbf3924cea5ce1962',
+		'RS_KEY' => 'Jon Smith',
+		'RS_SECRET' => 'XXXXXXXXXXXXXXXXXXXXXXX',
 		'RS_REGION' => 'IAD',
 
 		// Alert Email Information
 		'ALERT_EMAIL' => 'rogerwilliams1962@hotmail.com,david.fantin@successories.com',
-		'SMTP_HOST' => 'mailrelay.fotobar.com',
+		'SMTP_HOST' => 'mailrelay.XXXXXXXX.com',
 		'SMTP_PORT' => 25,
-		'SMTP_USER' => 'mailrelay@fotobar.com',
-		'SMTP_AUTH' => 'm06Ar14u',
+		'SMTP_USER' => 'XXXXXXXXXXXXX',
+		'SMTP_AUTH' => 'XXXXXXXXXX',
 
 		// Fotobar DB Information
 		'FOTOBAR_DB_USER' => 'presswise',
